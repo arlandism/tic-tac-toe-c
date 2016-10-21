@@ -8,4 +8,4 @@ main.o: main.c
 	gcc main.c -o $(EXECUTABLE)
 
 clean:
-	rm tic_tac_toe
+	rm $(EXECUTABLE)
