@@ -10,4 +10,4 @@ game.o:
 	gcc -c game.c -o game.o
 
 clean:
-	rm $(EXECUTABLE)
+	rm $(EXECUTABLE) game.o *~
