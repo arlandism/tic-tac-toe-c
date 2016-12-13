@@ -15,7 +15,8 @@ void Game(char user_token) {
   char winner;
   while (!game_over) {
       puts("Select a space");
-      print_avaiable_spaces(open_spaces(board));
+      print_available_spaces(board);
+      print_board(board);
       board[select_move(board)] = user_token;
       board[minimax(board)] = ai_token;
       winner = game_winner(board);
@@ -30,11 +31,16 @@ void Game(char user_token) {
 }
 
 int select_move(char board[]) {
-  size_t i;
-  for (i = 1; i < BOARD_SIZE; i++) {
-    
+  int space;
+  bool valid = false;
+  while (!valid) {
+    space = (int) scanf("%d", &space);
+    if (board[space]) {
+      valid = true;
+    }
   }
-  return 0;
+  printf("space is %d", space);
+  return space;
 }
 
 int ai_move(char board[]) {
@@ -47,15 +53,25 @@ char ai_token(char user_token) {
 
 char game_winner(char board[]) {
   size_t i, j;
-  dimension_len = sqrt(BOARD_LENGTH);
-  return 1;
+  int dimension_len = sqrt(BOARD_SIZE);
+  return '\0';
 }
 
-void print_available_spaces(int spaces[]) {
-  size_t i;
+void print_available_spaces(char board[]) {
   printf("\n");
-  for (i = 0; i < space_len; i++) {
-    printf("%d ", i);
+  for (size_t i = 0; i < BOARD_SIZE; i++) {
+    if (!board[i]) printf("%zd ", i);
+  }
+  printf("\n");
+}
+
+void print_board(char board[]) {
+  int dimension_len = sqrt(BOARD_SIZE);
+  printf("\n");
+  for (size_t i = 0; i < BOARD_SIZE; i++) {
+    printf(" %3c |", board[i]);
+    if ((i + 1) % dimension_len == 0)
+       printf("\n");
   }
   printf("\n");
 }
