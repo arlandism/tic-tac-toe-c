@@ -3,14 +3,13 @@
 #include <stdbool.h>
 #include <math.h>
 #include "game.h"
-#include "board.h"
 #include "tokens.h"
 #include "minimax.h"
 
 
 void Game(char user_token) {
   char ai_token = select_ai_token(user_token);
-  char board[BOARD_SIZE] = { 0 };
+  char board[BOARD_SIZE] = { '\0' };
   bool game_over = false;
   char winner;
   while (!game_over) {
@@ -34,12 +33,14 @@ int select_move(char board[]) {
   int space;
   bool valid = false;
   while (!valid) {
-    space = (int) scanf("%d", &space);
-    if (board[space]) {
+    scanf("%d", &space);
+    if (space < BOARD_SIZE && space >= 0 && !board[space]) {
       valid = true;
+    } else {
+      printf("Space must be between 0 and %d, and can't currently be occupied\n", BOARD_SIZE);
     }
   }
-  printf("space is %d", space);
+  printf("space is %d\n", space);
   return space;
 }
 
