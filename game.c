@@ -6,7 +6,6 @@
 #include "tokens.h"
 #include "minimax.h"
 
-
 void Game(char user_token) {
   char ai_token = select_ai_token(user_token);
   char board[BOARD_SIZE] = { '\0' };
@@ -18,8 +17,7 @@ void Game(char user_token) {
       print_board(board);
       board[select_move(board)] = user_token;
       board[minimax(board)] = ai_token;
-      winner = game_winner(board);
-      if (winner) game_over = true;
+      game_over = game_winner(board) || board_full(board);
     }
   
    if (winner == user_token) {
@@ -40,7 +38,7 @@ int select_move(char board[]) {
       printf("Space must be between 0 and %d, and can't currently be occupied\n", BOARD_SIZE);
     }
   }
-  printf("space is %d\n", space);
+  printf("You chose %d\n", space);
   return space;
 }
 
@@ -53,9 +51,55 @@ char ai_token(char user_token) {
 }
 
 char game_winner(char board[]) {
-  size_t i, j;
-  int dimension_len = sqrt(BOARD_SIZE);
+  char row_win = row_winner(board);
+  char col_win = column_winner(board);
+  char diag_win = diagonal_winner(board);
+  return row_win || col_win || diag_win;
+}
+
+char row_winner(char board[]) {
+  for (int i = 0; i < BOARD_SIZE; i = i + DIMENSION_SIZE) {
+    bool winner = false;
+    for (int j = 1; j <= i + DIMENSION_SIZE; j++) {
+      winner = winner && board[i] == board[i + j];
+    }
+    if (winner) return board[i]; // first space in row
+  }
   return '\0';
+}
+
+char column_winner(char board[]) {
+  for (int i = 0; i < DIMENSION_SIZE; i++) {
+    bool winner = false;
+    for (int j = 0; j < BOARD_SIZE; j = j + DIMENSION_SIZE) {
+      winner = winner && board[i] && board[i] == board[i + j];
+    }
+    if (winner == true) {
+      printf("Getting here\n");
+      return board[i];
+    }
+  }
+  return '\0';
+}
+
+char diagonal_winner(char board[]) {
+  bool winner = false;
+  for (int i = 0; i < BOARD_SIZE; i = i + DIMENSION_SIZE + 1) {
+    winner = winner && board[i] && board[i] == board[0];
+  }
+
+  if (winner) return board[0];
+
+  for (int i = DIMENSION_SIZE - 1; i < BOARD_SIZE; i = i + DIMENSION_SIZE - 1) {
+    winner = winner && board[i] && board[i] == board[DIMENSION_SIZE - 1];
+  }
+
+  if (winner) {
+    return board[DIMENSION_SIZE - 1];
+  } else {
+    return '\0';
+  }
+
 }
 
 void print_available_spaces(char board[]) {
@@ -75,4 +119,11 @@ void print_board(char board[]) {
        printf("\n");
   }
   printf("\n");
+}
+
+bool board_full(char board[]) {
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    if (!board[i]) return false;
+  }
+  return true;
 }
