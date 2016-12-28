@@ -21,8 +21,7 @@ void Game(char user_token) {
       if (!game_over) board[minimax(board)] = ai_token;
     }
 
-  printf("Value of winner %c\n", winner);
-  printf("Value of user_token %c\n", user_token);
+   print_board(board);
    if (winner == user_token) {
     puts("Congratulations! You won.");
   } else {
@@ -57,8 +56,13 @@ char game_winner(char board[]) {
   char row_win = row_winner(board);
   char col_win = column_winner(board);
   char diag_win = diagonal_winner(board);
-  printf("game winner %c\n", col_win);
-  return row_win || col_win || diag_win;
+  if (row_win) {
+    return row_win;
+  } else if (col_win) {
+    return col_win;
+  } else {
+    return diag_win;
+  }
 }
 
 char row_winner(char board[]) {
