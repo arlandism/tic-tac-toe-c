@@ -44,14 +44,6 @@ int select_move(char board[]) {
   return space;
 }
 
-int ai_move(char board[]) {
-  return 0;
-}
-
-char ai_token(char user_token) {
-  return '\0';
-}
-
 char game_winner(char board[]) {
   char row_win = row_winner(board);
   char col_win = column_winner(board);
@@ -90,23 +82,22 @@ char column_winner(char board[]) {
 }
 
 char diagonal_winner(char board[]) {
-  bool winner = true;
-  for (int i = 0; i < BOARD_SIZE; i = i + DIMENSION_SIZE + 1) {
+  bool winner;
+  for (int i = DIMENSION_SIZE + 1; i < BOARD_SIZE; i = i + DIMENSION_SIZE + 1) {
+    winner = true;
     winner = winner && board[i] && board[i] == board[0];
   }
 
   if (winner) return board[0];
 
-  for (int i = DIMENSION_SIZE - 1; i < BOARD_SIZE; i = i + DIMENSION_SIZE - 1) {
+  for (int i = (DIMENSION_SIZE - 1) + (DIMENSION_SIZE - 1); i < BOARD_SIZE - (DIMENSION_SIZE - 1); i = i + DIMENSION_SIZE - 1) {
+    winner = true;
     winner = winner && board[i] && board[i] == board[DIMENSION_SIZE - 1];
   }
 
-  if (winner) {
-    return board[DIMENSION_SIZE - 1];
-  } else {
-    return '\0';
-  }
+  if (winner) return board[DIMENSION_SIZE - 1];
 
+  return '\0';
 }
 
 void print_available_spaces(char board[]) {
