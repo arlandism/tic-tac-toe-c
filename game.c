@@ -16,10 +16,13 @@ void Game(char user_token) {
       print_available_spaces(board);
       print_board(board);
       board[select_move(board)] = user_token;
-      board[minimax(board)] = ai_token;
-      game_over = game_winner(board) || board_full(board);
+      winner = game_winner(board);
+      game_over = winner || board_full(board);
+      if (!game_over) board[minimax(board)] = ai_token;
     }
-  
+
+  printf("Value of winner %c\n", winner);
+  printf("Value of user_token %c\n", user_token);
    if (winner == user_token) {
     puts("Congratulations! You won.");
   } else {
@@ -54,12 +57,13 @@ char game_winner(char board[]) {
   char row_win = row_winner(board);
   char col_win = column_winner(board);
   char diag_win = diagonal_winner(board);
+  printf("game winner %c\n", col_win);
   return row_win || col_win || diag_win;
 }
 
 char row_winner(char board[]) {
   for (int i = 0; i < BOARD_SIZE; i = i + DIMENSION_SIZE) {
-    bool winner = false;
+    bool winner = true;
     for (int j = 1; j <= i + DIMENSION_SIZE; j++) {
       winner = winner && board[i] == board[i + j];
     }
@@ -70,12 +74,11 @@ char row_winner(char board[]) {
 
 char column_winner(char board[]) {
   for (int i = 0; i < DIMENSION_SIZE; i++) {
-    bool winner = false;
-    for (int j = 0; j < BOARD_SIZE; j = j + DIMENSION_SIZE) {
-      winner = winner && board[i] && board[i] == board[i + j];
+    bool winner = true;
+    for (int j = i + DIMENSION_SIZE; j < BOARD_SIZE; j = j + DIMENSION_SIZE) {
+      winner = winner && board[i] && board[i] == board[j];
     }
     if (winner == true) {
-      printf("Getting here\n");
       return board[i];
     }
   }
@@ -83,7 +86,7 @@ char column_winner(char board[]) {
 }
 
 char diagonal_winner(char board[]) {
-  bool winner = false;
+  bool winner = true;
   for (int i = 0; i < BOARD_SIZE; i = i + DIMENSION_SIZE + 1) {
     winner = winner && board[i] && board[i] == board[0];
   }
