@@ -68,8 +68,8 @@ char game_winner(char board[]) {
 char row_winner(char board[]) {
   for (int i = 0; i < BOARD_SIZE; i = i + DIMENSION_SIZE) {
     bool winner = true;
-    for (int j = 1; j <= i + DIMENSION_SIZE; j++) {
-      winner = winner && board[i] == board[i + j];
+    for (int j = i + 1; j < i + DIMENSION_SIZE; j++) {
+      winner = winner && board[i] && board[i] == board[j];
     }
     if (winner) return board[i]; // first space in row
   }
