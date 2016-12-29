@@ -4,7 +4,7 @@
 #include <math.h>
 #include "game.h"
 #include "tokens.h"
-#include "minimax.h"
+#include "dumbai.h"
 
 void Game(char user_token) {
   char ai_token = select_ai_token(user_token);
@@ -18,7 +18,7 @@ void Game(char user_token) {
       board[select_move(board)] = user_token;
       winner = game_winner(board);
       game_over = winner || board_full(board);
-      if (!game_over) board[minimax(board)] = ai_token;
+      if (!game_over) board[dumbai(board, BOARD_SIZE)] = ai_token;
     }
 
    print_board(board);

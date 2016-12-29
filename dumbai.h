@@ -1,0 +1,2 @@
+
+int dumbai(char [], int);
