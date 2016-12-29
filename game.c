@@ -12,21 +12,34 @@ void Game(char user_token) {
   bool game_over = false;
   char winner;
   while (!game_over) {
-      puts("Select a space");
-      print_available_spaces(board);
-      print_board(board);
-      board[select_move(board)] = user_token;
-      winner = game_winner(board);
-      game_over = winner || board_full(board);
-      if (!game_over) board[dumbai(board, BOARD_SIZE)] = ai_token;
+    user_move(board, user_token);
+    game_over = game_winner(board) || board_full(board);
+    if (!game_over) {
+      ai_move(board, ai_token);
+      game_over = game_winner(board) || board_full(board);
     }
+  }
 
-   print_board(board);
-   if (winner == user_token) {
-    puts("Congratulations! You won.");
+  print_board(board);
+  if (game_winner(board) == user_token) {
+   puts("Congratulations! You won.");
   } else {
     puts("Sorry, you lost.");
   }
+}
+
+void user_move(char board[], char user_token) {
+  puts("Select a space.");
+  print_available_spaces(board);
+  print_board(board);
+  int user_move = select_move(board);
+  board[user_move] = user_token;
+}
+
+void ai_move(char board[], char ai_token) {
+  int move = dumbai(board, BOARD_SIZE);
+  board[move] = ai_token;
+  printf("AI chose %d\n", move);
 }
 
 int select_move(char board[]) {
@@ -49,6 +62,7 @@ char game_winner(char board[]) {
   char col_win = column_winner(board);
   char diag_win = diagonal_winner(board);
   if (row_win) {
+    printf("Row winner is %c\n", row_win);
     return row_win;
   } else if (col_win) {
     return col_win;

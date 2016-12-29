@@ -8,5 +8,7 @@ char column_winner(char[]);
 char row_winner(char[]);
 char diagonal_winner(char[]);
 bool board_full(char[]);
+void user_move(char[], char);
+void ai_move(char[], char);
 #define BOARD_SIZE 9
 #define DIMENSION_SIZE 3
