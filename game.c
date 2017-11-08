@@ -22,7 +22,7 @@ void Game(char user_token) {
 
   print_board(board);
   if (game_winner(board) == user_token) {
-   puts("Congratulations! You won.");
+    puts("Congratulations! You won.");
   } else {
     puts("Sorry, you lost.");
   }

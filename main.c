@@ -5,10 +5,9 @@
 char select_token();
 
 int main() {
-  char token;
   puts("Welcome to Tac Toe Toe!");
 
-  token = select_token();
+  char token = select_token();
   printf("Great! You chose %c\n", token);
   Game(token);
 
