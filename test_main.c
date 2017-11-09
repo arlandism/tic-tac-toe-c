@@ -25,8 +25,16 @@ char current_player_token(char token) {
   return 'X';
 }
 
-void place_move(int move, char token, state s) {
-  s.board[move] = token;
+void switch_token(state *s) {
+  if (s->current_player_token == 'X') {
+    s->current_player_token = '0';
+  } else {
+    s->current_player_token = 'X';
+  }
+}
+
+void place_move(int move, state *s) {
+  s->board[move] = s->current_player_token;
 }
 
 void set_winner(state *s) {
@@ -45,15 +53,15 @@ int get_move(state s) {
   }
 }
 
-void print_board(state s) {
-  for(size_t i = 0; i < s.board_size; i++) {
-    if (s.board[i]) {
-      printf("%3c", s.board[i]);
+void print_board(state *s) {
+  for(size_t i = 0; i < s->board_size; i++) {
+    if (s->board[i]) {
+      printf("%3c", s->board[i]);
     } else {
       printf("   ");
     }
 
-    if(i % s.dimension == 0) {
+    if(i % s->dimension == 0) {
       printf("\n");
     } else {
       printf("|");
@@ -65,12 +73,18 @@ void print_board(state s) {
 int main(int argc, char** argv) {
   state s = initState();
   int i = 0;
+  printf("Welcome to Tic Tac Toe!\n");
+  printf("Please select the first move\n");
+  print_board(&s);
   while(!s.game_over || i < 2) {
     int m = get_move(s);
-    char token = current_player_token(s.current_player_token);
-    place_move(m, token, s);
+    place_move(m, &s);
+    if (s.current_player_token == 'O') {
+      printf("Computer moves to %d\n", m);
+    }
+    switch_token(&s);
     set_winner(&s);
-    print_board(s);
+    print_board(&s);
     i++;
   }
   printf("Hello world!\n");
