@@ -14,8 +14,8 @@
 - for each empty bit in board, copy the board,
 ```c
 int minimax(state *s) {
-  bit_array open_moves = available_moves(s);
-  len = # length of open movies
+  int []open_moves = available_moves(s);
+  len = sizeof(open_moves) / sizeof(int) # length of open moves
   if (s->winner || s->game_over) return terminal_state(s);
   bit best_move;
   for (size_t i = 0; i < len; i++) {
